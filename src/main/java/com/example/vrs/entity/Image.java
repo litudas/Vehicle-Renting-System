@@ -16,6 +16,8 @@ public class Image {
 	@Lob
 	private byte[] imageBytes;
 	
+	
+	
 	public int getImageId() {
 		return imageId;
 	}
