@@ -1,4 +1,5 @@
 package com.example.vrs.entity;
+import com.example.vrs.enums.UserRole;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +16,7 @@ public class User {
 	private String email;
 	private long phoneNumber;
 	private String password;
-	private Role role;
-	private String profilePicture;
+	private UserRole role;
 	
 	public int getUserId() {
 		return userId;
@@ -48,17 +48,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Role getRole() {
+	public UserRole getRole() {
 		return role;
 	}
-	public void setRole(Role role) {
+	public void setRole(UserRole role) {
 		this.role = role;
-	}
-	public String getProfilePicture() {
-		return profilePicture;
-	}
-	public void setProfilePicture(String profilePicture) {
-		this.profilePicture = profilePicture;
 	}
 	
 }
