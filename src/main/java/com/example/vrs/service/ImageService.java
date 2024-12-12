@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.vrs.entity.Image;
 import com.example.vrs.entity.User;
 import com.example.vrs.exceptions.FailedToUploadException;
+import com.example.vrs.exceptions.ProfilePictureNotFoundException;
 import com.example.vrs.exceptions.UserNotFoundException;
 import com.example.vrs.repository.ImageRepository;
 import com.example.vrs.repository.UserRepository;
@@ -52,6 +53,20 @@ public class ImageService {
 
 			throw new FailedToUploadException("Failed to upload image");
 		}
+	}
+
+	public Image findImageById(int imageId) {
+		
+		Optional<Image> optional = imageRepository.findById(imageId);
+		if (optional.isPresent()) {
+			Image image = optional.get();
+
+			return image;
+		} else {
+
+			throw new ProfilePictureNotFoundException("Image not Found");
+		}
+		
 	}
 
 }

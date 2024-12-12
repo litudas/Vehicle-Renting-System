@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.vrs.exceptions.FailedToUploadException;
+import com.example.vrs.exceptions.ProfilePictureNotFoundException;
 import com.example.vrs.exceptions.UserNotFoundException;
 
 @RestControllerAdvice
@@ -23,5 +24,13 @@ public class ApplicationExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
 				ex.getMessage(), "Failed to upload the Image"));
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleProfilePictureNotFound(ProfilePictureNotFoundException ex) {
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
+				ex.getMessage(), "Failed to Find the Image"));
+	}
+	
 
 }
