@@ -1,7 +1,5 @@
 package com.example.vrs.controller;
 
-import javax.print.attribute.standard.Media;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.vrs.entity.Image;
 import com.example.vrs.service.ImageService;
-import com.example.vrs.util.ResponseStructure;
 import com.example.vrs.util.SimpleResponseStructure;
 
 @RestController
@@ -27,32 +23,24 @@ public class ImageController {
 	}
 	
 	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure> uploadProfile(@RequestParam ("userId") int userId,
+	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam ("userId") int userId,
 				@RequestParam("file") MultipartFile file ){
 		
 		imageService.uploadUserProfilePicture(userId,file);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Updated"));
+				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Uploaded")); // application/json
 	}
 	
 	@GetMapping("/find-image-by-id")
-	public ResponseEntity<byte[]> findImageById(@RequestParam ("imageId") int imageId){
+	public ResponseEntity<byte[]> findImageById(@RequestParam ("image-id") int imageId){
 
 		Image image=imageService.findImageById(imageId);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.valueOf(image.getContentType()))
+		return ResponseEntity.status(HttpStatus.FOUND).contentType(MediaType.valueOf(image.getContentType())) // image/*1979
 				.body(image.getImageBytes());
 	}
 }
-
-
-
-
-
-
-
-
 
 
 
