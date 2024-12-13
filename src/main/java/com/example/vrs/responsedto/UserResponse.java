@@ -1,5 +1,6 @@
 package com.example.vrs.responsedto;
 
+import com.example.vrs.entity.Image;
 import com.example.vrs.enums.UserRole;
 
 public class UserResponse {
@@ -9,6 +10,7 @@ public class UserResponse {
 	private String email;
 	private String phoneNumber;
 	private UserRole role;
+	private String profilePictureLink;
 	
 	public int getUserId() {
 		return userId;
@@ -40,5 +42,12 @@ public class UserResponse {
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
+	public String getProfilePicture() {
+		return profilePictureLink;
+	}
+	public void setProfilePicture(String profilePicture) {
+		this.profilePictureLink = profilePicture;
+	}
+	
 
 }

@@ -23,32 +23,24 @@ public class ImageController {
 	}
 	
 	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure> uploadProfile(@RequestParam ("userId") int userId,
+	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam ("userId") int userId,
 				@RequestParam("file") MultipartFile file ){
 		
 		imageService.uploadUserProfilePicture(userId,file);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Updated"));
+				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Uploaded")); // application/json
 	}
 	
 	@GetMapping("/find-image-by-id")
-	public ResponseEntity<byte[]> findImageById(@RequestParam ("imageId") int imageId){
+	public ResponseEntity<byte[]> findImageById(@RequestParam ("image-id") int imageId){
 
 		Image image=imageService.findImageById(imageId);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.valueOf(image.getContentType()))
+		return ResponseEntity.status(HttpStatus.FOUND).contentType(MediaType.valueOf(image.getContentType())) // image/*1979
 				.body(image.getImageBytes());
 	}
 }
-
-
-
-
-
-
-
-
 
 
 

@@ -59,6 +59,7 @@ public class ImageService {
 		
 		Optional<Image> optional = imageRepository.findById(imageId);
 		if (optional.isPresent()) {
+			
 			Image image = optional.get();
 
 			return image;
