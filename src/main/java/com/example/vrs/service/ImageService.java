@@ -28,16 +28,29 @@ public class ImageService {
 
 		Optional<User> optional = userRepository.findById(userId);
 		if (optional.isPresent()) {
-			Image image = imageRepository.save(this.getImage(file));
+
 			User user = optional.get();
-			user.setProfilePicture(image);
 
-			userRepository.save(user);
+			if (user.getProfilePicture() != null) {
+				Image image = user.getProfilePicture();
+				this.uploadUserProfile(file, user);
+				imageRepository.delete(image);
+			}
+
+			this.uploadUserProfile(file, user);
+
 		} else {
-
 			throw new UserNotFoundException("User not Found");
 		}
 
+	}
+
+	private void uploadUserProfile(MultipartFile file, User user) {
+
+		Image image = imageRepository.save(this.getImage(file));
+		user.setProfilePicture(image);
+
+		userRepository.save(user);
 	}
 
 	private Image getImage(MultipartFile file) {
@@ -56,10 +69,10 @@ public class ImageService {
 	}
 
 	public Image findImageById(int imageId) {
-		
+
 		Optional<Image> optional = imageRepository.findById(imageId);
 		if (optional.isPresent()) {
-			
+
 			Image image = optional.get();
 
 			return image;
@@ -67,7 +80,7 @@ public class ImageService {
 
 			throw new ProfilePictureNotFoundException("Image not Found");
 		}
-		
+
 	}
 
 }

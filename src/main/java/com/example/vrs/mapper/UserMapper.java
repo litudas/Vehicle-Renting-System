@@ -9,15 +9,12 @@ import com.example.vrs.responsedto.UserResponse;
 @Component
 public class UserMapper {
 
-	public User mapToUser(UserRequest request) {
-
-		User user = new User();
+	public User mapToUser(UserRequest request, User user) {
 
 		user.setUsername(request.getUsername());
 		user.setEmail(request.getEmail());
 		user.setPhoneNumber(request.getPhoneNumber());
 		user.setPassword(request.getPassword());
-		user.setRole(request.getRole());
 
 		return user;
 	}
@@ -31,7 +28,7 @@ public class UserMapper {
 		response.setEmail(user.getEmail());
 		response.setPhoneNumber(user.getPhoneNumber());
 		response.setRole(user.getRole());
-
+		
 		return response;
 	}
 

@@ -37,7 +37,7 @@ public class ImageController {
 
 		Image image=imageService.findImageById(imageId);
 		
-		return ResponseEntity.status(HttpStatus.FOUND).contentType(MediaType.valueOf(image.getContentType())) // image/*1979
+		return ResponseEntity.status(HttpStatus.FOUND).contentType(MediaType.valueOf(image.getContentType())) // image/*
 				.body(image.getImageBytes());
 	}
 }

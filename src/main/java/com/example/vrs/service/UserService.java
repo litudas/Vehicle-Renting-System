@@ -3,7 +3,10 @@ package com.example.vrs.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.example.vrs.entity.Image;
 import com.example.vrs.entity.User;
+import com.example.vrs.enums.UserRole;
 import com.example.vrs.exceptions.UserNotFoundException;
 import com.example.vrs.mapper.UserMapper;
 import com.example.vrs.repository.ImageRepository;
@@ -24,9 +27,10 @@ public class UserService {
 
 	}
 
-	public UserResponse registerUser(UserRequest request) {
+	public UserResponse register(UserRequest request,UserRole role) {
 
-		User user = userMapper.mapToUser(request);
+		User user = userMapper.mapToUser(request, new User());
+		user.setRole(role);
 		User savedUser = userRepository.save(user);
 
 		return userMapper.mapToUserResponse(savedUser);
@@ -40,21 +44,39 @@ public class UserService {
 			User user = optional.get();
 
 			UserResponse response = userMapper.mapToUserResponse(user);
-			this.setProfilePictureURL(response, user.getUserId());
-			
+			this.setProfilePictureURL(response, user.getProfilePicture());
+
 			return response;
 		} else {
 
 			throw new UserNotFoundException("User not Found");
 		}
 	}
-	
-	private void setProfilePictureURL(UserResponse response, int userId) {
+
+	private void setProfilePictureURL(UserResponse response, Image profilePicture) {
+
+		if (profilePicture != null)
+			response.setProfilePictureLink("/find-image-by-id?image-id=" + profilePicture.getImageId());
+
+	}
+
+	public UserResponse updateUser(UserRequest request,int userId) {
 		
-		int imageId = userRepository.getProfilePicturIdByUserId(userId);
-		if(imageId > 0)
-			response.setProfilePicture("/find-image-by-id?image-id=" + imageId);
-		
+		Optional<User> optional = userRepository.findById(userId);
+
+		if (optional.isPresent()) {
+			User user = userMapper.mapToUser(request, optional.get());
+			
+			userRepository.save(user);
+			
+			UserResponse response = userMapper.mapToUserResponse(user);
+			this.setProfilePictureURL(response, user.getProfilePicture()); 
+			
+			return response;
+			
+		} else {
+			throw new UserNotFoundException("Failed To Find The User");
+		}
 	}
 
 }
