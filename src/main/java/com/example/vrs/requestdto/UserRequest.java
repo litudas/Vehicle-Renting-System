@@ -1,14 +1,11 @@
 package com.example.vrs.requestdto;
 
-import com.example.vrs.enums.UserRole;
-
 public class UserRequest {
 
 	private String username;
 	private String email;
 	private String phoneNumber;
 	private String password;
-	private UserRole role;
 	
 	public String getUsername() {
 		return username;
@@ -34,11 +31,4 @@ public class UserRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public UserRole getRole() {
-		return role;
-	}
-	public void setRole(UserRole role) {
-		this.role = role;
-	}
-	
 }
