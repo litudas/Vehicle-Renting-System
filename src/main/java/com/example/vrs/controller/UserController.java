@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.vrs.enums.UserRole;
 import com.example.vrs.requestdto.UserRequest;
@@ -44,19 +43,19 @@ public class UserController {
 
 	}
 
-	@GetMapping("/find-user")
-	public ResponseEntity<ResponseStructure<UserResponse>> findUser(@RequestParam int userId) {
+	@GetMapping("/find-account")
+	public ResponseEntity<ResponseStructure<UserResponse>> findUser() {
 
-		UserResponse response = userService.findUser(userId);
+		UserResponse response = userService.findUser();
 
 		return ResponseEntity.status(HttpStatus.FOUND)
 				.body(ResponseStructure.create(HttpStatus.FOUND.value(), "User Found", response));
 	}
 
 	@PutMapping("/update-user")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request,@RequestParam int userId) {
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request) {
 		
-		UserResponse response = userService.updateUser(request,userId);
+		UserResponse response = userService.updateUser(request);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)

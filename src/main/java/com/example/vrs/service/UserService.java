@@ -1,18 +1,16 @@
 package com.example.vrs.service;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.vrs.entity.Image;
 import com.example.vrs.entity.User;
 import com.example.vrs.enums.UserRole;
-import com.example.vrs.exceptions.UserNotFoundException;
 import com.example.vrs.mapper.UserMapper;
 import com.example.vrs.repository.ImageRepository;
 import com.example.vrs.repository.UserRepository;
 import com.example.vrs.requestdto.UserRequest;
 import com.example.vrs.responsedto.UserResponse;
+import com.example.vrs.security.AuthUtil;
 
 @Service
 public class UserService {
@@ -20,13 +18,15 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
+	private final AuthUtil authUtil;
 
 	public UserService(UserRepository userRepository, ImageRepository imageRepository, UserMapper userMapper,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder, AuthUtil authUtil) {
 		super();
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
+		this.authUtil = authUtil;
 	}
 
 	public UserResponse register(UserRequest request, UserRole role) {
@@ -39,21 +39,13 @@ public class UserService {
 		return userMapper.mapToUserResponse(savedUser);
 	}
 
-	public UserResponse findUser(int userId) {
+	public UserResponse findUser() {
 
-		Optional<User> optional = userRepository.findById(userId);
-		if (optional.isPresent()) {
+		User user = authUtil.getCurrentUser();
+		UserResponse response = userMapper.mapToUserResponse(user);
+		this.setProfilePictureURL(response, user.getProfilePicture());
 
-			User user = optional.get();
-
-			UserResponse response = userMapper.mapToUserResponse(user);
-			this.setProfilePictureURL(response, user.getProfilePicture());
-
-			return response;
-		} else {
-
-			throw new UserNotFoundException("User not Found");
-		}
+		return response;
 	}
 
 	private void setProfilePictureURL(UserResponse response, Image profilePicture) {
@@ -63,23 +55,17 @@ public class UserService {
 
 	}
 
-	public UserResponse updateUser(UserRequest request, int userId) {
+	public UserResponse updateUser(UserRequest request) {
+		
+		User user = userMapper.mapToUser(request, authUtil.getCurrentUser());
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-		Optional<User> optional = userRepository.findById(userId);
+		userRepository.save(user);
 
-		if (optional.isPresent()) {
-			User user = userMapper.mapToUser(request, optional.get());
+		UserResponse response = userMapper.mapToUserResponse(user);
+		this.setProfilePictureURL(response, user.getProfilePicture());
 
-			userRepository.save(user);
-
-			UserResponse response = userMapper.mapToUserResponse(user);
-			this.setProfilePictureURL(response, user.getProfilePicture());
-
-			return response;
-
-		} else {
-			throw new UserNotFoundException("Failed To Find The User");
-		}
+		return response;
 	}
 
 }

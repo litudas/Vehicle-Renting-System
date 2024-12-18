@@ -23,10 +23,9 @@ public class ImageController {
 	}
 	
 	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam ("userId") int userId,
-				@RequestParam("file") MultipartFile file ){
+	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam("file") MultipartFile file ){
 		
-		imageService.uploadUserProfilePicture(userId,file);
+		imageService.uploadUserProfilePicture(file);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Uploaded")); // application/json
