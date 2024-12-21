@@ -23,13 +23,23 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@PostMapping("/admin/register")
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody UserRequest request) {
+
+		UserResponse response = userService.register(request, UserRole.ADMIN);
+
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Admin Created Successfully", response));
+
+	}
+
 	@PostMapping("/customer/register")
 	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.CUSTOMER);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Customer Created", response));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Customer Created Successfully", response));
 
 	}
 
@@ -39,7 +49,7 @@ public class UserController {
 		UserResponse response = userService.register(request, UserRole.RENTING_PARTNER);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Renting Partner Created", response));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Renting Partner Created Successfully", response));
 
 	}
 
@@ -54,11 +64,10 @@ public class UserController {
 
 	@PutMapping("/update-user")
 	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request) {
-		
+
 		UserResponse response = userService.updateUser(request);
-		
-		return ResponseEntity
-				.status(HttpStatus.OK)
+
+		return ResponseEntity.status(HttpStatus.OK)
 				.body(ResponseStructure.create(HttpStatus.OK.value(), "User Updated", response));
 	}
 
