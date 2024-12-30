@@ -13,6 +13,8 @@ import com.example.vrs.responsedto.UserResponse;
 import com.example.vrs.service.UserService;
 import com.example.vrs.util.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 
@@ -24,7 +26,7 @@ public class UserController {
 	}
 
 	@PostMapping("/admin/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.ADMIN);
 
@@ -34,7 +36,7 @@ public class UserController {
 	}
 
 	@PostMapping("/customer/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.CUSTOMER);
 
@@ -44,7 +46,7 @@ public class UserController {
 	}
 
 	@PostMapping("/renting-partner/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerRentingPartner(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> registerRentingPartner(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.RENTING_PARTNER);
 
@@ -63,7 +65,7 @@ public class UserController {
 	}
 
 	@PutMapping("/update-user")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.updateUser(request);
 

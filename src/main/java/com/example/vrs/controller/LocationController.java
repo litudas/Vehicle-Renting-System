@@ -25,7 +25,7 @@ public class LocationController {
 		this.locationService = locationService;
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('RENTING_PARTNER')")
 	@PostMapping("/add-location")
 	public ResponseEntity<ResponseStructure<LocationResponse>> addLocation(@RequestBody LocationRequest request) {
 

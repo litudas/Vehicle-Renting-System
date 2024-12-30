@@ -2,9 +2,11 @@ package com.example.vrs.security;
 
 import java.util.Collection;
 import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import com.example.vrs.entity.User;
 
 public class UserDetailsImpl implements UserDetails{

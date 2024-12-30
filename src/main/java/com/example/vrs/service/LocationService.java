@@ -2,11 +2,12 @@ package com.example.vrs.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.example.vrs.entity.Location;
 import com.example.vrs.entity.VehicleListing;
 import com.example.vrs.exceptions.VehicleListingException;
-import com.example.vrs.exceptions.VehicleNotFoundExcepction;
 import com.example.vrs.mapper.LocationMapper;
 import com.example.vrs.repository.LocationRepository;
 import com.example.vrs.repository.VehicleListingRepository;
