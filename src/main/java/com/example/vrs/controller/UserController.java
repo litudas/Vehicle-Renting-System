@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.vrs.enums.UserRole;
 import com.example.vrs.requestdto.UserRequest;
 import com.example.vrs.responsedto.UserResponse;
 import com.example.vrs.service.UserService;
 import com.example.vrs.util.ResponseStructure;
+
+import jakarta.validation.Valid;
 
 @RestController
 public class UserController {
@@ -24,42 +25,51 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@PostMapping("/admin/register")
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody @Valid UserRequest request) {
+
+		UserResponse response = userService.register(request, UserRole.ADMIN);
+
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Admin Created Successfully", response));
+
+	}
+
 	@PostMapping("/customer/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> registerCustomer(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.CUSTOMER);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Customer Created", response));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Customer Created Successfully", response));
 
 	}
 
 	@PostMapping("/renting-partner/register")
-	public ResponseEntity<ResponseStructure<UserResponse>> registerRentingPartner(@RequestBody UserRequest request) {
+	public ResponseEntity<ResponseStructure<UserResponse>> registerRentingPartner(@RequestBody @Valid UserRequest request) {
 
 		UserResponse response = userService.register(request, UserRole.RENTING_PARTNER);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Renting Partner Created", response));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Renting Partner Created Successfully", response));
 
 	}
 
-	@GetMapping("/find-user")
-	public ResponseEntity<ResponseStructure<UserResponse>> findUser(@RequestParam int userId) {
+	@GetMapping("/find-account")
+	public ResponseEntity<ResponseStructure<UserResponse>> findUser() {
 
-		UserResponse response = userService.findUser(userId);
+		UserResponse response = userService.findUser();
 
 		return ResponseEntity.status(HttpStatus.FOUND)
 				.body(ResponseStructure.create(HttpStatus.FOUND.value(), "User Found", response));
 	}
 
 	@PutMapping("/update-user")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request,@RequestParam int userId) {
-		
-		UserResponse response = userService.updateUser(request,userId);
-		
-		return ResponseEntity
-				.status(HttpStatus.OK)
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody @Valid UserRequest request) {
+
+		UserResponse response = userService.updateUser(request);
+
+		return ResponseEntity.status(HttpStatus.OK)
 				.body(ResponseStructure.create(HttpStatus.OK.value(), "User Updated", response));
 	}
 

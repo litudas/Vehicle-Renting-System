@@ -1,8 +1,11 @@
 package com.example.vrs.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +26,9 @@ public class ImageController {
 	}
 	
 	@PostMapping("/upload-profile")
-	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam ("userId") int userId,
-				@RequestParam("file") MultipartFile file ){
+	public ResponseEntity<SimpleResponseStructure> uploadUserProfilePicture(@RequestParam("file") MultipartFile file ){
 		
-		imageService.uploadUserProfilePicture(userId,file);
+		imageService.uploadUserProfilePicture(file);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Profile Picture Uploaded")); // application/json
@@ -39,6 +41,16 @@ public class ImageController {
 		
 		return ResponseEntity.status(HttpStatus.FOUND).contentType(MediaType.valueOf(image.getContentType())) // image/*
 				.body(image.getImageBytes());
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/add-vehicle-images")
+	public ResponseEntity<SimpleResponseStructure> addVehicleImages(@RequestParam("file") List<MultipartFile> file,@RequestParam ("vehicleId") int vehicleId) {
+
+		imageService.addVehicleImages(file,vehicleId);
+
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(SimpleResponseStructure.create(HttpStatus.CREATED.value(), "Vehicle Images Uploaded"));
 	}
 }
 

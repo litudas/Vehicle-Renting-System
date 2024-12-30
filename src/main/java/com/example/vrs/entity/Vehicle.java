@@ -1,11 +1,15 @@
 package com.example.vrs.entity;
 
+import java.util.List;
+
 import com.example.vrs.enums.FuelType;
 import com.example.vrs.enums.VehicleType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Vehicle {
@@ -17,6 +21,9 @@ public class Vehicle {
 	private VehicleType type;
 	private String model;
 	private FuelType fuelType;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Image> vehicleImages;
 
 	public int getVehichleId() {
 		return vehicleId;
@@ -57,4 +64,21 @@ public class Vehicle {
 	public void setFuelType(FuelType fuelType) {
 		this.fuelType = fuelType;
 	}
+
+	public int getVehicleId() {
+		return vehicleId;
+	}
+
+	public void setVehicleId(int vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+
+	public List<Image> getVehicleImages() {
+		return vehicleImages;
+	}
+
+	public void setVehicleImages(List<Image> vehicleImages) {
+		this.vehicleImages = vehicleImages;
+	}
+	
 }

@@ -1,10 +1,10 @@
 package com.example.vrs.util;
 
-public class ErrorStructure {
+public class ErrorStructure<T> {
 
 	private int status;
 	private String message;
-	private String rootCause;
+	private T rootCause;
 
 	public int getStatus() {
 		return status;
@@ -22,17 +22,19 @@ public class ErrorStructure {
 		this.message = message;
 	}
 
-	public String getRootCause() {
+	
+
+	public T getRootCause() {
 		return rootCause;
 	}
 
-	public void setRootCause(String rootCause) {
+	public void setRootCause(T rootCause) {
 		this.rootCause = rootCause;
 	}
 
-	public static ErrorStructure create(int status, String message, String rootCause) {
+	public static <T> ErrorStructure<T> create(int status, String message, T rootCause) {
 
-		ErrorStructure error = new ErrorStructure();
+		ErrorStructure<T> error = new ErrorStructure<T>();
 		error.setStatus(status);
 		error.setMessage(message);
 		error.setRootCause(rootCause);
